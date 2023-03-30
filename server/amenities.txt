@@ -1,0 +1,31 @@
+2 stars:
+cap: 1, max: 2, amenities: ["coffee maker", "office desk"]
+cap: 1, max: 2, amenities: ["coffee maker", "office desk"],
+cap: 2, max: 3, amenities: ["coffee maker"],
+cap: 2, max: 3, amenities: ["coffee maker", "private balcony"],
+cap: 2, max: 4, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath"]
+cap: 2, max: 4, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath"]
+
+3 stars:
+cap: 1, max: 2, amenities: ["coffee maker", "office desk"],
+cap: 1, max: 2, amenities: ["coffee maker", "office desk"],
+cap: 2, max: 3, amenities: ["coffee maker", "private balcony"],
+cap: 2, max: 3, amenities: ["coffee maker", "private balcony"],
+cap: 2, max: 4, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath"],
+cap: 2, max: 8, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath", "private pool", "living area"]
+
+4 stars:
+cap: 1, max: 2, amenities: ["coffee maker", "office desk"],
+cap: 1, max: 2, amenities: ["convertible bed", "kitchennette", "coffee maker"], 
+cap: 2, max: 3, amenities: ["kitchennette", "coffee maker"],
+cap: 2, max: 4, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath", "private balcony"],
+cap: 2, max: 8, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath", "private pool", "living area"]
+cap: 2, max: 8, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath", "private pool", "living area"]
+
+5 stars:
+cap: 1, max: 2, amenities: ["kitchennette", "coffee maker", "office desk"]
+cap: 1, max: 2, amenities: ["convertible bed", "kitchennette", "coffee maker", "office desk", "private balcony"],
+cap: 2, max: 3, amenities: ["kitchennette", "coffee maker", "private balcony"],
+cap: 2, max: 4, amenities: ["minibar", "kitchennette", "coffee maker", "office desk", "jacuzzi bath", "private balcony", "private pool"],
+cap: 2, max: 8, amenities: ["kitchennette", "coffee maker", "office desk", "jacuzzi bath", "fireplace", "private pool", "living area"]
+cap: 2, max: 8, amenities: ["minibar", "kitchennette", "coffee maker", "office desk", "jacuzzi bath", "fireplace", "private balcony", "private pool", "living area", "dining area"]

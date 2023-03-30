@@ -1,3 +1,7 @@
+/** Creates the express application to support database routing
+ *
+ */
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -7,10 +11,92 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
-// ROUTES
+// data generator >:)
+/* app.post("/room", async (req, res) => {
+	try {
+		//const meow = Math.floor(Math.random() * 10);
+		for (let i = 1; i <= 40; ++i) {
+			const rating = await pool.query(
+				"SELECT rating FROM hotel WHERE hotel_id = $1",
+				[i]
+			);
+
+			var rooms = [];
+			var base = 50,
+				incr = 10;
+			switch (rating.rows[0].rating) {
+				case 2:
+					rooms.push(
+						{ cap: 1, max: 2, amenities: 2 },
+						{ cap: 1, max: 2, amenities: 2 },
+						{ cap: 2, max: 3, amenities: 1 },
+						{ cap: 2, max: 3, amenities: 2 },
+						{ cap: 2, max: 4, amenities: 4 },
+						{ cap: 2, max: 4, amenities: 4 }
+					);
+					break;
+				case 3:
+					rooms.push(
+						{ cap: 1, max: 2, amenities: 2 },
+						{ cap: 1, max: 2, amenities: 2 },
+						{ cap: 2, max: 3, amenities: 2 },
+						{ cap: 2, max: 3, amenities: 2 },
+						{ cap: 2, max: 4, amenities: 4 },
+						{ cap: 2, max: 8, amenities: 6 }
+					);
+					base = 79;
+					incr = 15;
+					break;
+
+				case 4:
+					rooms.push(
+						{ cap: 1, max: 2, amenities: 2 },
+						{ cap: 1, max: 2, amenities: 3 },
+						{ cap: 2, max: 3, amenities: 2 },
+						{ cap: 2, max: 4, amenities: 5 },
+						{ cap: 2, max: 8, amenities: 6 },
+						{ cap: 2, max: 8, amenities: 6 }
+					);
+					base = 219;
+					incr = 40;
+					break;
+				case 5:
+					rooms.push(
+						{ cap: 1, max: 2, amenities: 3 },
+						{ cap: 1, max: 2, amenities: 5 },
+						{ cap: 2, max: 3, amenities: 3 },
+						{ cap: 2, max: 4, amenities: 7 },
+						{ cap: 2, max: 8, amenities: 7 },
+						{ cap: 2, max: 8, amenities: 10 }
+					);
+					base = 999;
+					incr = 100;
+					break;
+			}
+			var roomNum = 1;
+			for (let r of rooms) {
+				await pool.query(
+					"INSERT INTO room(room_number, hotel_id, price, capacity, max_capacity) VALUES($1, $2, $3, $4, $5)",
+					[
+						roomNum,
+						i,
+						base + r.cap * incr + (r.amenities * incr) / 2,
+						r.cap,
+						r.max,
+					]
+				);
+				++roomNum;
+			}
+		}
+	} catch (error) {
+		console.log(error.message);
+	}
+}); */
+
+// -*-*-*-*-*-*-*-*-*- ROUTES (queries) -*-*-*-*-*-*-*-*-*-
 
 // insertion
-app.post("/hotel_chain", async (req, res) => {
+app.post("/booking", async (req, res) => {
 	try {
 		const {
 			name,
@@ -44,7 +130,7 @@ app.post("/hotel_chain", async (req, res) => {
 });
 
 // get all
-app.get("/hotel_chain", async (req, res) => {
+app.get("/booking", async (req, res) => {
 	try {
 		const allChains = await pool.query("SELECT * FROM hotel_chain");
 		res.json(allChains.rows);
@@ -54,7 +140,7 @@ app.get("/hotel_chain", async (req, res) => {
 });
 
 // get hotel_chain with chain_id
-app.get("/hotel_chain/:chain_id", async (req, res) => {
+app.get("/booking/:booking_id", async (req, res) => {
 	try {
 		const { chain_id } = req.params;
 		const chain = await pool.query(
@@ -68,7 +154,7 @@ app.get("/hotel_chain/:chain_id", async (req, res) => {
 });
 
 //update hotel_chain with chain_id
-app.put("/hotel_chain/:chain_id", async (req, res) => {
+app.put("/booking/:booking_id", async (req, res) => {
 	try {
 		const { chain_id } = req.params;
 		const {
@@ -92,7 +178,7 @@ app.put("/hotel_chain/:chain_id", async (req, res) => {
 	}
 });
 
-app.delete("/hotel_chain/:chain_id", async (req, res) => {
+app.delete("/booking/:booking_id", async (req, res) => {
 	try {
 	} catch (error) {
 		const { chain_id } = req.params;
