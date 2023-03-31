@@ -93,104 +93,147 @@ app.use(express.json());
 	}
 }); */
 
-// -*-*-*-*-*-*-*-*-*- ROUTES (queries) -*-*-*-*-*-*-*-*-*-
+// -*-*-*-*-*-*-*-*-*- BOOKING/RENTING ROUTES (queries) -*-*-*-*-*-*-*-*-*-
 
-// insertion
+/** route to insert new booking
+ */
 app.post("/booking", async (req, res) => {
-	try {
-		const {
-			name,
-			street_num,
-			street_name,
-			unit_num,
-			city,
-			state,
-			country,
-			postal_code,
-		} = req.body;
+	insertBooking(req, res);
+});
 
-		const newChain = await pool.query(
-			"INSERT INTO hotel_chain (name, street_num, street_name, unit_num, city, state, country, postal_code) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+/** route to insert new renting
+ */
+app.post("/renting", async (req, res) => {
+	try {
+		const { employee_sin, cc_number, expiry_date } = req.body;
+		var books;
+		// Checks if request includes the key-value pair for 'booking_id', otherwise create a new booking
+		if (req.body.hasOwnProperty("booking_id")) {
+			booking_id = req.body.booking_id;
+			books = await pool.query(
+				"SELECT * FROM books WHERE booking_id = $1",
+				[booking_id]
+			);
+		} else books = insertBooking(req, res);
+
+		await pool.query("BEGIN");
+		await pool.query(
+			"INSERT INTO renting (booking_id, cc_number, expiry_date) VALUES($1, $2, $3) RETURNING *",
+			[books.booking_id, cc_number, expiry_date]
+		);
+		await pool.query(
+			"INSERT INTO manages (booking_id, hotel_id, room_number, customer_sin, employee_sin) VALUES($1, $2, $3, $4, $5) RETURNING *",
 			[
-				name,
-				street_num,
-				street_name,
-				unit_num,
-				city,
-				state,
-				country,
-				postal_code,
+				books.booking_id,
+				books.hotel_id,
+				books.room_number,
+				books.customer_sin,
+				employee_sin,
 			]
 		);
-
-		res.json(newChain.rows[0]);
+		await pool.query("COMMIT");
 	} catch (error) {
+		await pool.query("ROLLBACK");
 		console.log(error.message);
 	}
 });
 
-// get all
-app.get("/booking", async (req, res) => {
-	try {
-		const allChains = await pool.query("SELECT * FROM hotel_chain");
-		res.json(allChains.rows);
-	} catch (error) {
-		console.log(error.message);
-	}
-});
-
-// get hotel_chain with chain_id
+// get booking with booking_id
 app.get("/booking/:booking_id", async (req, res) => {
 	try {
-		const { chain_id } = req.params;
-		const chain = await pool.query(
-			"SELECT * FROM hotel_chain WHERE chain_id = $1",
-			[chain_id]
+		const { booking_id } = req.params;
+		const booking = await pool.query(
+			"SELECT * FROM bookings WHERE booking_id = $1",
+			[booking_id]
 		);
-		res.json(chain.rows[0]);
+		res.json(booking.rows[0]);
 	} catch (error) {
 		console.log(error.message);
 	}
 });
 
-//update hotel_chain with chain_id
+//update booking check-in and out dates
 app.put("/booking/:booking_id", async (req, res) => {
 	try {
-		const { chain_id } = req.params;
-		const {
-			name,
-			street_num,
-			street_name,
-			unit_num,
-			city,
-			state,
-			country,
-			postal_code,
-		} = req.body;
+		const { booking_id } = req.params;
+		const { checkin_date, checkout_date } = req.body;
 
-		const newChain = await pool.query(
-			"UPDATE hotel_chain SET name = $1 WHERE chain_id = $2",
-			[name, chain_id]
+		await pool.query("BEGIN");
+
+		await pool.query(
+			"UPDATE booking SET checkin_date = $1 WHERE booking_id = $2",
+			[checkin_date, booking_id]
 		);
-		res.json("hotel_chain name was updated!");
+		await pool.query(
+			"UPDATE booking SET checkout_date = $1 WHERE booking_id = $2",
+			[checkout_date, booking_id]
+		);
+
+		await pool.query("COMMIT");
+		res.json("booking's check-in and check-out dates are updated");
 	} catch (error) {
 		console.log(error.message);
-	}
-});
-
-app.delete("/booking/:booking_id", async (req, res) => {
-	try {
-	} catch (error) {
-		const { chain_id } = req.params;
-		const deleteHotelChain = await pool.query(
-			"DELETE FROM hotel_chain WHERE chain_id = $1",
-			[chain_id]
-		);
-		res.json("hotel_chain was deleted!");
-		console.log(error.message);
+		await pool.query("ROLLBACK");
 	}
 });
 
 app.listen(5000, () => {
 	console.log("server has started on port 5000");
 });
+
+async function insertBooking(req, res) {
+	try {
+		const {
+			checkin_date,
+			checkout_date,
+			hotel_id,
+			room_number,
+			customer_sin,
+		} = req.body;
+
+		const newBooking = await pool.query(
+			"INSERT INTO booking (checkin_date, checkout_date) VALUES($1, $2) RETURNING *",
+			[checkin_date, checkout_date]
+		);
+		const booking_id = newBooking.rows[0].booking_id;
+		const newBooks = await pool.query(
+			"INSERT INTO books (booking_id, hotel_id, room_number, customer_sin) VALUES($1, $2, $3, $4) RETURNING *",
+			[booking_id, hotel_id, room_number, customer_sin]
+		);
+		res.json(newBooking.rows[0], newBooks.rows[0]);
+		return newBooks.rows[0];
+	} catch (error) {
+		console.log(error.message);
+	}
+}
+
+async function insertRenting(booking_id, req, res) {
+	try {
+		const {
+			checkin_date,
+			checkout_date,
+			hotel_id,
+			room_number,
+			customer_sin,
+		} = req.body;
+
+		await pool.query(
+			"INSERT INTO renting (booking_id, cc_number, expiry_date) VALUES($1, $2, $3) RETURNING *",
+			[books.booking_id, cc_number, expiry_date]
+		);
+		await pool.query(
+			"INSERT INTO manages (booking_id, hotel_id, room_number, customer_sin, employee_sin) VALUES($1, $2, $3, $4, $5) RETURNING *",
+			[
+				booking_id,
+				books.hotel_id,
+				books.room_number,
+				books.customer_sin,
+				employee_sin,
+			]
+		);
+		res.json(newBooking.rows[0], newBooks.rows[0]);
+		return newBooks.rows[0];
+	} catch (error) {
+		console.log(error.message);
+	}
+}

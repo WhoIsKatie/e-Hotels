@@ -5,7 +5,7 @@
 -- Dumped from database version 15.2
 -- Dumped by pg_dump version 15.2
 
--- Started on 2023-03-30 13:02:43
+-- Started on 2023-03-31 01:22:43
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3468 (class 1262 OID 16899)
+-- TOC entry 3474 (class 1262 OID 16899)
 -- Name: e-Hotels; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -93,7 +93,7 @@ CREATE SEQUENCE public.booking_booking_id_seq
 ALTER TABLE public.booking_booking_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3469 (class 0 OID 0)
+-- TOC entry 3475 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: booking_booking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -412,7 +412,7 @@ CREATE SEQUENCE public.renting_booking_id_seq
 ALTER TABLE public.renting_booking_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3470 (class 0 OID 0)
+-- TOC entry 3476 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: renting_booking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -522,7 +522,7 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- TOC entry 3274 (class 2606 OID 16985)
+-- TOC entry 3278 (class 2606 OID 16985)
 -- Name: hotel_chain hotel_chain_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -531,7 +531,7 @@ ALTER TABLE ONLY public.hotel_chain
 
 
 --
--- TOC entry 3276 (class 2606 OID 16987)
+-- TOC entry 3280 (class 2606 OID 16987)
 -- Name: inst_hotel_phone hotel_inst_phone_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -540,7 +540,7 @@ ALTER TABLE ONLY public.inst_hotel_phone
 
 
 --
--- TOC entry 3270 (class 2606 OID 17121)
+-- TOC entry 3273 (class 2606 OID 17121)
 -- Name: hotel hotel_manager_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -549,7 +549,7 @@ ALTER TABLE ONLY public.hotel
 
 
 --
--- TOC entry 3272 (class 2606 OID 17201)
+-- TOC entry 3275 (class 2606 OID 17201)
 -- Name: hotel hotel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -558,7 +558,7 @@ ALTER TABLE ONLY public.hotel
 
 
 --
--- TOC entry 3278 (class 2606 OID 16991)
+-- TOC entry 3282 (class 2606 OID 16991)
 -- Name: inst_amenity inst_amenity_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -567,7 +567,7 @@ ALTER TABLE ONLY public.inst_amenity
 
 
 --
--- TOC entry 3280 (class 2606 OID 17132)
+-- TOC entry 3284 (class 2606 OID 17132)
 -- Name: inst_concern inst_concern_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -576,7 +576,7 @@ ALTER TABLE ONLY public.inst_concern
 
 
 --
--- TOC entry 3282 (class 2606 OID 16995)
+-- TOC entry 3286 (class 2606 OID 16995)
 -- Name: inst_email inst_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -585,7 +585,7 @@ ALTER TABLE ONLY public.inst_email
 
 
 --
--- TOC entry 3284 (class 2606 OID 16997)
+-- TOC entry 3288 (class 2606 OID 16997)
 -- Name: inst_email inst_email_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -594,7 +594,7 @@ ALTER TABLE ONLY public.inst_email
 
 
 --
--- TOC entry 3286 (class 2606 OID 17130)
+-- TOC entry 3290 (class 2606 OID 17130)
 -- Name: inst_role inst_role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -603,7 +603,7 @@ ALTER TABLE ONLY public.inst_role
 
 
 --
--- TOC entry 3288 (class 2606 OID 17230)
+-- TOC entry 3292 (class 2606 OID 17230)
 -- Name: manages manages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -612,7 +612,7 @@ ALTER TABLE ONLY public.manages
 
 
 --
--- TOC entry 3290 (class 2606 OID 17003)
+-- TOC entry 3294 (class 2606 OID 17003)
 -- Name: person person_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -621,7 +621,7 @@ ALTER TABLE ONLY public.person
 
 
 --
--- TOC entry 3292 (class 2606 OID 17236)
+-- TOC entry 3296 (class 2606 OID 17236)
 -- Name: registered registered_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -630,7 +630,7 @@ ALTER TABLE ONLY public.registered
 
 
 --
--- TOC entry 3294 (class 2606 OID 17007)
+-- TOC entry 3298 (class 2606 OID 17007)
 -- Name: renting renting_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -639,7 +639,7 @@ ALTER TABLE ONLY public.renting
 
 
 --
--- TOC entry 3296 (class 2606 OID 17242)
+-- TOC entry 3301 (class 2606 OID 17242)
 -- Name: room room_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -648,7 +648,55 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3320 (class 2620 OID 17134)
+-- TOC entry 3269 (class 1259 OID 17294)
+-- Name: hotel_chain_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX hotel_chain_index ON public.hotel USING btree (chain_id);
+
+
+--
+-- TOC entry 3270 (class 1259 OID 17295)
+-- Name: hotel_city_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX hotel_city_index ON public.hotel USING btree (city);
+
+
+--
+-- TOC entry 3271 (class 1259 OID 17296)
+-- Name: hotel_country_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX hotel_country_index ON public.hotel USING btree (country);
+
+
+--
+-- TOC entry 3276 (class 1259 OID 17297)
+-- Name: hotel_rating_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX hotel_rating_index ON public.hotel USING btree (rating);
+
+
+--
+-- TOC entry 3299 (class 1259 OID 17293)
+-- Name: room_capacity_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX room_capacity_index ON public.room USING btree (max_capacity);
+
+
+--
+-- TOC entry 3302 (class 1259 OID 17298)
+-- Name: room_price_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX room_price_index ON public.room USING btree (price);
+
+
+--
+-- TOC entry 3326 (class 2620 OID 17134)
 -- Name: hotel hotel_manager_constraint_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -656,7 +704,7 @@ CREATE CONSTRAINT TRIGGER hotel_manager_constraint_trigger AFTER INSERT OR UPDAT
 
 
 --
--- TOC entry 3297 (class 2606 OID 17010)
+-- TOC entry 3303 (class 2606 OID 17010)
 -- Name: books books_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -665,7 +713,7 @@ ALTER TABLE ONLY public.books
 
 
 --
--- TOC entry 3298 (class 2606 OID 17015)
+-- TOC entry 3304 (class 2606 OID 17015)
 -- Name: books books_customer_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -674,7 +722,7 @@ ALTER TABLE ONLY public.books
 
 
 --
--- TOC entry 3299 (class 2606 OID 17248)
+-- TOC entry 3305 (class 2606 OID 17248)
 -- Name: books books_hotel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -683,7 +731,7 @@ ALTER TABLE ONLY public.books
 
 
 --
--- TOC entry 3300 (class 2606 OID 17253)
+-- TOC entry 3306 (class 2606 OID 17253)
 -- Name: books books_room_number_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -692,7 +740,7 @@ ALTER TABLE ONLY public.books
 
 
 --
--- TOC entry 3301 (class 2606 OID 17030)
+-- TOC entry 3307 (class 2606 OID 17030)
 -- Name: inst_chain_phone chain_inst_phone_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -701,7 +749,7 @@ ALTER TABLE ONLY public.inst_chain_phone
 
 
 --
--- TOC entry 3302 (class 2606 OID 17035)
+-- TOC entry 3308 (class 2606 OID 17035)
 -- Name: customer customer_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -710,7 +758,7 @@ ALTER TABLE ONLY public.customer
 
 
 --
--- TOC entry 3303 (class 2606 OID 17258)
+-- TOC entry 3309 (class 2606 OID 17258)
 -- Name: employee employee_hotel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -719,7 +767,7 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- TOC entry 3304 (class 2606 OID 17045)
+-- TOC entry 3310 (class 2606 OID 17045)
 -- Name: employee employee_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -728,7 +776,7 @@ ALTER TABLE ONLY public.employee
 
 
 --
--- TOC entry 3305 (class 2606 OID 17050)
+-- TOC entry 3311 (class 2606 OID 17050)
 -- Name: hotel hotel_chain_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -737,7 +785,7 @@ ALTER TABLE ONLY public.hotel
 
 
 --
--- TOC entry 3307 (class 2606 OID 17273)
+-- TOC entry 3313 (class 2606 OID 17273)
 -- Name: inst_hotel_phone hotel_inst_phone_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -746,7 +794,7 @@ ALTER TABLE ONLY public.inst_hotel_phone
 
 
 --
--- TOC entry 3308 (class 2606 OID 17263)
+-- TOC entry 3314 (class 2606 OID 17263)
 -- Name: inst_amenity inst_amenity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -755,7 +803,7 @@ ALTER TABLE ONLY public.inst_amenity
 
 
 --
--- TOC entry 3309 (class 2606 OID 17268)
+-- TOC entry 3315 (class 2606 OID 17268)
 -- Name: inst_concern inst_concern_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -764,7 +812,7 @@ ALTER TABLE ONLY public.inst_concern
 
 
 --
--- TOC entry 3310 (class 2606 OID 17070)
+-- TOC entry 3316 (class 2606 OID 17070)
 -- Name: inst_email inst_email_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -773,7 +821,7 @@ ALTER TABLE ONLY public.inst_email
 
 
 --
--- TOC entry 3311 (class 2606 OID 17075)
+-- TOC entry 3317 (class 2606 OID 17075)
 -- Name: inst_role inst_role_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -782,7 +830,7 @@ ALTER TABLE ONLY public.inst_role
 
 
 --
--- TOC entry 3306 (class 2606 OID 17080)
+-- TOC entry 3312 (class 2606 OID 17080)
 -- Name: hotel manager_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -791,7 +839,7 @@ ALTER TABLE ONLY public.hotel
 
 
 --
--- TOC entry 3312 (class 2606 OID 17278)
+-- TOC entry 3318 (class 2606 OID 17278)
 -- Name: manages manages_booking_id_hotel_id_room_number_customer_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -800,7 +848,7 @@ ALTER TABLE ONLY public.manages
 
 
 --
--- TOC entry 3313 (class 2606 OID 17090)
+-- TOC entry 3319 (class 2606 OID 17090)
 -- Name: manages manages_employee_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -809,7 +857,7 @@ ALTER TABLE ONLY public.manages
 
 
 --
--- TOC entry 3314 (class 2606 OID 17283)
+-- TOC entry 3320 (class 2606 OID 17283)
 -- Name: registered registered_hotel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -818,7 +866,7 @@ ALTER TABLE ONLY public.registered
 
 
 --
--- TOC entry 3315 (class 2606 OID 17100)
+-- TOC entry 3321 (class 2606 OID 17100)
 -- Name: registered registered_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -827,7 +875,7 @@ ALTER TABLE ONLY public.registered
 
 
 --
--- TOC entry 3316 (class 2606 OID 17105)
+-- TOC entry 3322 (class 2606 OID 17105)
 -- Name: renting renting_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -836,7 +884,7 @@ ALTER TABLE ONLY public.renting
 
 
 --
--- TOC entry 3317 (class 2606 OID 17288)
+-- TOC entry 3323 (class 2606 OID 17288)
 -- Name: room room_hotel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -845,7 +893,7 @@ ALTER TABLE ONLY public.room
 
 
 --
--- TOC entry 3318 (class 2606 OID 17110)
+-- TOC entry 3324 (class 2606 OID 17110)
 -- Name: supervises supervises_subordinate_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -854,7 +902,7 @@ ALTER TABLE ONLY public.supervises
 
 
 --
--- TOC entry 3319 (class 2606 OID 17115)
+-- TOC entry 3325 (class 2606 OID 17115)
 -- Name: supervises supervises_supervisor_sin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -862,7 +910,7 @@ ALTER TABLE ONLY public.supervises
     ADD CONSTRAINT supervises_supervisor_sin_fkey FOREIGN KEY (supervisor_sin) REFERENCES public.employee(sin) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2023-03-30 13:02:43
+-- Completed on 2023-03-31 01:22:43
 
 --
 -- PostgreSQL database dump complete
