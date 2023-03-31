@@ -177,10 +177,7 @@ app.put("/booking/:booking_id", async (req, res) => {
 	}
 });
 
-app.listen(5000, () => {
-	console.log("server has started on port 5000");
-});
-
+// async function for inserting new bookings
 async function insertBooking(req, res) {
 	try {
 		const {
@@ -190,6 +187,11 @@ async function insertBooking(req, res) {
 			room_number,
 			customer_sin,
 		} = req.body;
+
+		await pool.query(
+			"INSERT INTO registered (hotel_id, sin, registration_date) VALUES($1, $2, CURRENT_DATE) ON CONFLICT ON CONSTRAINT registered_pkey DO NOTHING",
+			[hotel_id, customer_sin]
+		);
 
 		const newBooking = await pool.query(
 			"INSERT INTO booking (checkin_date, checkout_date) VALUES($1, $2) RETURNING *",
@@ -207,33 +209,8 @@ async function insertBooking(req, res) {
 	}
 }
 
-async function insertRenting(booking_id, req, res) {
-	try {
-		const {
-			checkin_date,
-			checkout_date,
-			hotel_id,
-			room_number,
-			customer_sin,
-		} = req.body;
+// -*-*-*-*-*-*-*-*-*- BROWSING ROUTES (queries) -*-*-*-*-*-*-*-*-*-
 
-		await pool.query(
-			"INSERT INTO renting (booking_id, cc_number, expiry_date) VALUES($1, $2, $3) RETURNING *",
-			[books.booking_id, cc_number, expiry_date]
-		);
-		await pool.query(
-			"INSERT INTO manages (booking_id, hotel_id, room_number, customer_sin, employee_sin) VALUES($1, $2, $3, $4, $5) RETURNING *",
-			[
-				booking_id,
-				books.hotel_id,
-				books.room_number,
-				books.customer_sin,
-				employee_sin,
-			]
-		);
-		res.json(newBooking.rows[0], newBooks.rows[0]);
-		return newBooks.rows[0];
-	} catch (error) {
-		console.log(error.message);
-	}
-}
+app.listen(5000, () => {
+	console.log("server has started on port 5000");
+});
