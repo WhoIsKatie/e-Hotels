@@ -11,7 +11,7 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
-// data generator >:)
+// data generator
 /* app.post("/room", async (req, res) => {
 	try {
 		//const meow = Math.floor(Math.random() * 10);
@@ -92,6 +92,91 @@ app.use(express.json());
 		console.log(error.message);
 	}
 }); */
+
+// -*-*-*-*-*-*-*-*-*- REGISTRATION ROUTE(query) -*-*-*-*-*-*-*-*-*-
+
+app.put("/customer", async (req, res) => {
+	try {
+		const { sin, first, last } = req.body;
+		const newPerson = await pool.query(
+			"INSERT INTO person(sin, first_name, last_name) VALUES($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *",
+			[sin, first, last]
+		);
+
+		if (person != null) {
+			const newReg = await pool.query(
+				"INSERT INTO registered (sin, registration_date) VALUES($1, CURRENT_DATE) ON CONFLICT ON CONSTRAINT registered_pkey DO NOTHING",
+				[customer_sin]
+			);
+			if (req.body.hasOwnProperty("street_num")) {
+				var query =
+					"UPDATE registered SET street_num = $1, street_name = $2, city = $3, country = $4, postal_code = $5";
+
+				if (req.body.hasOwnProperty("middle_name"))
+					await pool.query(
+						"UPDATE registered SET middle_name = $1 WHERE sin = $2",
+						[req.body.middle_name, sin]
+					);
+
+				if (req.body.hasOwnProperty("unit"))
+					query += ", unit = $6 WHERE sin = $7 ";
+				else query += " WHERE sin = $6";
+
+				const updatedReg = await pool.query(query);
+				res.json(updatedReg);
+			} else res.json(newReg);
+		} else res.json(false);
+	} catch (error) {
+		console.log(error.message);
+	}
+});
+
+// -*-*-*-*-*-*-*-*-*- BROWSING ROUTES (queries) -*-*-*-*-*-*-*-*-*-
+
+app.get("/room", async (req, res) => {
+	try {
+		const { checkin_date, checkout_date } = req.body;
+		var query =
+			"SELECT * FROM available_rooms AS ar WHERE (NOT EXISTS(SELECT * FROM booking AS b WHERE b.room_number = room_number AND NOT (b.checkout_date <= date $1 OR b.checkin_date >= date $2)) OR NOT EXISTS(SELECT booking * FROM booking AS b WHERE (b.room_number = room_number))";
+		var vals = [checkin_date, checkout_date];
+		if (req.body.hasOwnProperty("capacity")) {
+			vals.push(req.body.capacity);
+			query += "AND max_capacity >= $" + vals.length;
+		}
+
+		if (req.body.hasOwnProperty("chain_name")) {
+			vals.push(req.body.chain_name);
+			query += "AND chain_name = $" + vals.length;
+		}
+		if (req.body.hasOwnProperty("rating")) {
+			vals.push(req.body.rating);
+			query += "AND rating = $" + vals.length;
+		}
+		if (req.body.hasOwnProperty("price")) {
+			vals.push(req.body.price);
+			query += "AND price <= $" + vals.length;
+		}
+		if (req.body.hasOwnProperty("country")) {
+			if (req.body.hasOwnProperty("city")) {
+				vals.push(req.body.city);
+				query += "AND city = $" + vals.length;
+			}
+			vals.push(req.body.country);
+			query += "AND country = $" + vals.length;
+		}
+		if (req.body.hasOwnProperty("hotel_rooms")) {
+			vals.push(req.body.hotel_rooms);
+			query +=
+				"AND (SELECT COUNT(*) FROM available_rooms WHERE hotel_id = ar.hotel_id) >= $" +
+				vals.length;
+		}
+
+		const booking = await pool.query(query, vals);
+		res.json(booking.rows);
+	} catch (error) {
+		console.log(error.message);
+	}
+});
 
 // -*-*-*-*-*-*-*-*-*- BOOKING/RENTING ROUTES (queries) -*-*-*-*-*-*-*-*-*-
 
@@ -188,11 +273,6 @@ async function insertBooking(req, res) {
 			customer_sin,
 		} = req.body;
 
-		await pool.query(
-			"INSERT INTO registered (hotel_id, sin, registration_date) VALUES($1, $2, CURRENT_DATE) ON CONFLICT ON CONSTRAINT registered_pkey DO NOTHING",
-			[hotel_id, customer_sin]
-		);
-
 		const newBooking = await pool.query(
 			"INSERT INTO booking (checkin_date, checkout_date) VALUES($1, $2) RETURNING *",
 			[checkin_date, checkout_date]
@@ -208,8 +288,6 @@ async function insertBooking(req, res) {
 		console.log(error.message);
 	}
 }
-
-// -*-*-*-*-*-*-*-*-*- BROWSING ROUTES (queries) -*-*-*-*-*-*-*-*-*-
 
 app.listen(5000, () => {
 	console.log("server has started on port 5000");
