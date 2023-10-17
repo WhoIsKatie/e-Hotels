@@ -1,7 +1,7 @@
 # e-Hotels
 e-Hotels was implemented using a combination of PostgreSQL, Express.js, React.js, and Node.js. 
 
-The database management system was built using PostgreSQL due to its robustness and reliability in handling large amounts of data writes. Inserting data for five hotel chains quickly scaled to amass over 200 rows of data for hotel rooms, not considering the many bookings each room would generate in a real-world context.
+The database management system was built upon PostgreSQL due to its robustness and reliability in handling large amounts of data writes. Inserting data for five hotel chains quickly scaled to amass over 200 rows of data for hotel rooms, not considering the many bookings each room would generate in a real-world context.
 
 For backend and server-side logic and routing, the Express framework allowed for the design of the RESTful API to handle HTTP requests and responses. Each transaction between the server and client prompts the application to connect and query to the database.
 
